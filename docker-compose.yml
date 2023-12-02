@@ -12,35 +12,34 @@ services:
 
   db:
     container_name: db
-    image: postgres:15
+    build:
+      context: '.'
+      dockerfile: 'docks/Dockerfile.db'
     ports:
       - 5432:5432
     volumes:
       - database:/var/lib/postgresql/data
     restart: unless-stopped
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DATABASE: scrapper
+    env_file:
+      - .env.dev
     networks:
       - web-scraper-demo
 
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    container_name: pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=root
-    ports:
-      - '8081:80'
-    depends_on:
-      - db
-    networks:
-      - web-scraper-demo
+  # pgweb:
+  #   image: sosedoff/pgweb:0.11.6
+  #   command: /bin/sh -c '
+  #     pgweb 
+  #     --bind 0.0.0.0 
+  #     --listen 8081
+  #     --prefix db_viewer
+  #     --no-ssh
+  #     --auth-user $$INTERNAL_USER
+  #     --auth-pass $$INTERNAL_PASS
+  #     --url postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@$$POSTGRES_HOST:$$POSTGRES_PORT/$$POSTGRES_DB?sslmode=disable'
+  #   depends_on:
+  #     - db
+  #   env_file:
+  #     - .env.dev
 
   nginx:
     container_name: nginx

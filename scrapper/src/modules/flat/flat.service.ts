@@ -12,7 +12,7 @@ export class FlatService {
 
   create(createFlat: CreateFlatDto): Promise<Flat> {
     const flat: Flat = new Flat();
-    flat.title = createFlat.name;
+    flat.title = createFlat.title;
     flat.image_url = createFlat.image_url;
     return this.flatRepository.save(flat);
   }
