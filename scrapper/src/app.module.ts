@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Flat } from './modules/flat/entities/flat.entity';
 import { FlatModule } from './modules/flat/flat.module';
+import { ScrapperModule } from './modules/scrapper/scrapper.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { FlatModule } from './modules/flat/flat.module';
       // migrations: ['src/migration/*.ts'],
     }),
     FlatModule,
+    ScrapperModule,
   ],
   controllers: [AppController],
   providers: [AppService],
