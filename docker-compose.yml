@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  scrapper:
+    container_name: scrapper
+    build:
+      context: '.'
+      dockerfile: 'docks/Dockerfile.scrapper'
+    restart: unless-stopped
+    networks:
+      - web-scraper-demo
+
+  db:
+    container_name: db
+    image: postgres:15
+    ports:
+      - 5432:5432
+    volumes:
+      - database:/var/lib/postgresql/data
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - web-scraper-demo
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - '8081:80'
+    depends_on:
+      - db
+    networks:
+      - web-scraper-demo
+
+  nginx:
+    container_name: nginx
+    build:
+      context: '.'
+      dockerfile: 'docks/Dockerfile.nginx'
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks:
+      - web-scraper-demo
+
+networks:
+  web-scraper-demo:
+
+volumes:
+  database:
