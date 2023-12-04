@@ -12,9 +12,7 @@ services:
 
   db:
     container_name: db
-    build:
-      context: '.'
-      dockerfile: 'docks/Dockerfile.db'
+    image: postgres:15
     ports:
       - 5432:5432
     volumes:
@@ -24,6 +22,15 @@ services:
       - .env.dev
     networks:
       - web-scraper-demo
+
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - cache:/data
 
   # pgweb:
   #   image: sosedoff/pgweb:0.11.6
@@ -57,3 +64,5 @@ networks:
 
 volumes:
   database:
+  cache:
+    driver: local
