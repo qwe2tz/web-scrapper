@@ -3,15 +3,11 @@ import { FlatService } from '../flat/flat.service';
 import { initScrapper, processFlatsPage } from './procedures/scrapper';
 import { CreateFlatDto } from '../flat/dto/create-flat.dto';
 import { NUM_OF_ITEMS, ITEMS_PER_PAGE, FLATS_WEB_PAGE } from './config';
-import { Process, Processor } from '@nestjs/bull';
 
 @Injectable()
-@Processor('scrapper')
 export class ScrapperService {
   constructor(private readonly flatService: FlatService) {}
 
-  // NOTE: Maybe I should move this to separate consumers files...
-  @Process('scrapper-job')
   async scrapeFlats() {
     const requiredSelector = '.dir-property-list';
 

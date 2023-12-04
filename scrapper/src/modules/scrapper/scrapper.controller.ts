@@ -16,9 +16,9 @@ export class ScrapperController {
   @Get()
   async scrapeFlats() {
     await this.scrapperQueue.add('scrapper-job', {});
+    return 'OK';
   }
 
-  // return this.scrapperService.scrapeFlats();
-  // NOTE: We could have more scrapers, aeach having its own config,
-  // method of scrapping, etc, so I decided to make it a module
+  // NOTE: We could have more scrapers, each having its own config,
+  // method of scrapping, etc, so I decided to make it a module.
 }
