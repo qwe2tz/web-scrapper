@@ -4,9 +4,16 @@ import { ScrapperController } from './scrapper.controller';
 import { FlatModule } from '../flat/flat.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Flat } from '../flat/entities/flat.entity';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
-  imports: [FlatModule, TypeOrmModule.forFeature([Flat])],
+  imports: [
+    BullModule.registerQueueAsync({
+      name: 'scrapper',
+    }),
+    FlatModule,
+    TypeOrmModule.forFeature([Flat]),
+  ],
   controllers: [ScrapperController],
   providers: [ScrapperService],
 })
