@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { FlatService } from '../flat/flat.service';
 import { initScrapper, processFlatsPage } from './procedures/scrapper';
 import { CreateFlatDto } from '../flat/dto/create-flat.dto';
-import { NUM_OF_ITEMS, ITEMS_PER_PAGE } from './config';
+import { NUM_OF_ITEMS, ITEMS_PER_PAGE, FLATS_WEB_PAGE } from './config';
 
 @Injectable()
 export class ScrapperService {
@@ -17,13 +17,11 @@ export class ScrapperService {
 
     try {
       for (let index = 1; index < iterations; index++) {
-        const webpage =
-          'https://www.sreality.cz/en/search/for-sale/apartments?page=' + index;
+        const webpage = FLATS_WEB_PAGE + index;
         await page.goto(webpage);
         await page.waitForSelector(requiredSelector);
 
         const flats: CreateFlatDto[] = await processFlatsPage(page);
-        console.log('FLATS: ', flats);
 
         // Save flats to DB
         flats.forEach((flat) => {
