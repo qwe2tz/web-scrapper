@@ -8,6 +8,15 @@ export class Flat {
   @Column({ type: 'varchar', length: 100 })
   title: string;
 
+  @Column({ type: 'varchar', length: 100 })
+  location: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  size: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  price: string;
+
   @Column({ type: 'varchar', length: 500 })
   image_url: string;
 }

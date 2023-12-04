@@ -1,16 +1,17 @@
-FROM ubuntu:18.04
+FROM node:18
+
+RUN apt-get update \
+    && apt-get install -y chromium \
+    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
+    --no-install-recommends
 
 WORKDIR /app
 
-RUN apt update && apt install -y ca-certificates curl gnupg &&  \
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-
-ENV NODE_MAJOR=20
-RUN apt update && apt install -y nodejs && \
-    apt-get install -y chromium-browser
-
 COPY ./scrapper/package.json .
+COPY ./scrapper/package-lock.json .
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
 
 RUN npm install
 

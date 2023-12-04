@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Flat } from './modules/flat/entities/flat.entity';
 import { FlatModule } from './modules/flat/flat.module';
 import { ScrapperModule } from './modules/scrapper/scrapper.module';
+import { ScrapperService } from './modules/scrapper/scrapper.service';
+import { FlatService } from './modules/flat/flat.service';
 
 @Module({
   imports: [
@@ -18,13 +20,11 @@ import { ScrapperModule } from './modules/scrapper/scrapper.module';
       database: 'flats',
       synchronize: true,
       logging: true,
-      // migrationsTableName: 'migration',
-      // migrations: ['src/migration/*.ts'],
     }),
     FlatModule,
     ScrapperModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ScrapperService, FlatService],
 })
 export class AppModule {}

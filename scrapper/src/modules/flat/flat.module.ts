@@ -8,5 +8,6 @@ import { Flat } from './entities/flat.entity';
   imports: [TypeOrmModule.forFeature([Flat])],
   controllers: [FlatController],
   providers: [FlatService],
+  exports: [FlatService, TypeOrmModule.forFeature([Flat])],
 })
 export class FlatModule {}
