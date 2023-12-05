@@ -21,8 +21,4 @@ export class FlatService {
   findOne(title: string): Promise<Flat> {
     return this.flatRepository.findOneBy({ title: title });
   }
-
-  remove(id: number): Promise<{ affected?: number }> {
-    return this.flatRepository.delete(id);
-  }
 }

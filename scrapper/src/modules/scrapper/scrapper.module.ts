@@ -4,10 +4,18 @@ import { ScrapperController } from './scrapper.controller';
 import { FlatModule } from '../flat/flat.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Flat } from '../flat/entities/flat.entity';
+import { BullModule } from '@nestjs/bull';
+import { ScrapperProcessor } from './scrapper.processor';
 
 @Module({
-  imports: [FlatModule, TypeOrmModule.forFeature([Flat])],
+  imports: [
+    BullModule.registerQueue({
+      name: 'scrapper',
+    }),
+    FlatModule,
+    TypeOrmModule.forFeature([Flat]),
+  ],
   controllers: [ScrapperController],
-  providers: [ScrapperService],
+  providers: [ScrapperService, ScrapperProcessor],
 })
 export class ScrapperModule {}
