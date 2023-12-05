@@ -6,6 +6,7 @@ services:
     build:
       context: '.'
       dockerfile: 'docks/Dockerfile.scrapper'
+    command: npm run start:dev main
     restart: unless-stopped
     networks:
       - web-scraper-demo
@@ -18,24 +19,37 @@ services:
     volumes:
       - database:/var/lib/postgresql/data
     restart: unless-stopped
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
+    env_file:
+      - .env.dev
     networks:
       - web-scraper-demo
 
-  pgadmin:
-    image: dpage/pgadmin4
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
     restart: always
-    container_name: pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=root
     ports:
-      - '8081:80'
-    depends_on:
-      - db
+      - '6379:6379'
+    volumes: 
+      - cache:/data
     networks:
       - web-scraper-demo
+
+  # pgweb:
+  #   image: sosedoff/pgweb:0.11.6
+  #   command: /bin/sh -c '
+  #     pgweb 
+  #     --bind 0.0.0.0 
+  #     --listen 8081
+  #     --prefix db_viewer
+  #     --no-ssh
+  #     --auth-user $$INTERNAL_USER
+  #     --auth-pass $$INTERNAL_PASS
+  #     --url postgres://$$POSTGRES_USER:$$POSTGRES_PASSWORD@$$POSTGRES_HOST:$$POSTGRES_PORT/$$POSTGRES_DB?sslmode=disable'
+  #   depends_on:
+  #     - db
+  #   env_file:
+  #     - .env.dev
 
   nginx:
     container_name: nginx
@@ -53,3 +67,5 @@ networks:
 
 volumes:
   database:
+  cache:
+    driver: local
