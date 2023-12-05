@@ -6,6 +6,7 @@ services:
     build:
       context: '.'
       dockerfile: 'docks/Dockerfile.scrapper'
+    command: npm run start:dev main
     restart: unless-stopped
     networks:
       - web-scraper-demo
