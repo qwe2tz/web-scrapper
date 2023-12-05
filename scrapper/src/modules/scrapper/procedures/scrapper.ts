@@ -8,7 +8,6 @@ export async function initScrapper(): Promise<Scrapper> {
   });
   const page = await browser.newPage();
   await page.setViewport({ width: 766, height: 286 });
-  const a = 'Hello';
 
   return { page, browser };
 }

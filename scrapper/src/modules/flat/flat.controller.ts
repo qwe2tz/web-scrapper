@@ -15,20 +15,4 @@ export class FlatController {
   findAll() {
     return this.flatService.findAll();
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: number) {
-  //   return this.FlatService.findOne(+id);
-  // }
-
-  //   @Patch(':id')
-  //   update(@Param('id') id: string, @Body() updateFlatDto: UpdateFlatDto) {
-  //     return this.FlatService.update(+id, updateFlatDto);
-  //   }
-
-  //   @Delete(':id')
-  //   remove(@Param('id') id: string) {
-  //     return this.FlatService.remove(+id);
-  //   }
-  // }
 }

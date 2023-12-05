@@ -12,10 +12,11 @@ export class ScrapperController {
     @InjectQueue('scrapper') private readonly scrapperQueue: Queue,
   ) {}
 
-  // Just one method -> scrapeFlats
   @Get()
   async scrapeFlats() {
-    await this.scrapperQueue.add('scrapper-job', {});
+    console.log('Calling queue add');
+    await this.scrapperQueue.add('scrapper-job', { test: 'test' });
+    console.log('queue added');
     return 'OK';
   }
 

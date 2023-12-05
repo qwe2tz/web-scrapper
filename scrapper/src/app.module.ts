@@ -8,6 +8,7 @@ import { ScrapperModule } from './modules/scrapper/scrapper.module';
 import { ScrapperService } from './modules/scrapper/scrapper.service';
 import { FlatService } from './modules/flat/flat.service';
 import { BullModule } from '@nestjs/bull';
+import { ScrapperProcessor } from './modules/scrapper/scrapper.processor';
 
 @Module({
   imports: [
@@ -22,13 +23,11 @@ import { BullModule } from '@nestjs/bull';
       synchronize: true,
       logging: true,
     }),
-    BullModule.forRootAsync({
-      useFactory: () => ({
-        redis: {
-          host: 'redis',
-          port: 6379,
-        },
-      }),
+    BullModule.forRoot({
+      redis: {
+        host: 'redis',
+        port: 6379,
+      },
     }),
     FlatModule,
     ScrapperModule,

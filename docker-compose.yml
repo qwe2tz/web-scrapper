@@ -25,12 +25,15 @@ services:
       - web-scraper-demo
 
   redis:
+    container_name: redis
     image: redis:6.2-alpine
     restart: always
     ports:
       - '6379:6379'
     volumes: 
       - cache:/data
+    networks:
+      - web-scraper-demo
 
   # pgweb:
   #   image: sosedoff/pgweb:0.11.6
