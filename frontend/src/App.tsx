@@ -1,33 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react';
 import './App.css'
+import { get } from './lib/api';
+import FlatList from './components/FlatList';
+import initScrapingProcess from './lib/procedures';
+import Spinner from './components/Spinner';
 
+// Get flats
+// Get pagination component, update state based on the pagination
+// Clear interval when pagination data is the same as the set one
 function App() {
-  const [count, setCount] = useState(0)
+  const [loadingInProgress, setLoadingInProgress] = useState(false);
+  const [flatsData, setFlatsData] = useState([]);
+
+  const fetchFlats = async () => {
+    const response = await get('flat');
+
+    if (response) {
+      if(response.length != flatsData.length) {
+        setFlatsData(response);
+      }
+    }
+  }
+
+  const handleFetchData = async () => {
+    setLoadingInProgress(true);
+    await initScrapingProcess();
+  };
+
+  // Hooks
+  useEffect(() => {
+    console.log("Initial load. Fetching flats ...");
+    fetchFlats();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchFlats();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [flatsData]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {flatsData.length == 0 ?
+        (
+          loadingInProgress ? <Spinner /> : <button onClick={() => { handleFetchData() }}>Fetch flats data </button>
+        ) :
+        (<FlatList flats={flatsData} />)
+      }
     </>
   )
 }
