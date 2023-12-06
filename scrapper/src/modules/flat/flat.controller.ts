@@ -15,4 +15,9 @@ export class FlatController {
   findAll() {
     return this.flatService.findAll();
   }
+
+  @Get('delete_all')
+  deleteAll() {
+    return this.flatService.deleteAll();
+  }
 }

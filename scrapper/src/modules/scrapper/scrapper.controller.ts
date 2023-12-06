@@ -7,15 +7,13 @@ import { Queue } from 'bull';
 @Controller('scrapper')
 export class ScrapperController {
   constructor(
-    private readonly scrapperService: ScrapperService,
-    private readonly flatService: FlatService,
-    @InjectQueue('scrapper') private readonly scrapperQueue: Queue,
+    @InjectQueue('scrapper') private readonly _scrapperQueue: Queue,
   ) {}
 
   @Get()
   async scrapeFlats() {
     console.log('Calling queue add');
-    await this.scrapperQueue.add('scrapper-job', { test: 'test' });
+    await this._scrapperQueue.add('scrapper-job', { test: 'test' });
     console.log('queue added');
     return 'OK';
   }

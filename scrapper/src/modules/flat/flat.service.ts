@@ -21,4 +21,8 @@ export class FlatService {
   findOne(title: string): Promise<Flat> {
     return this.flatRepository.findOneBy({ title: title });
   }
+
+  async deleteAll(): Promise<void> {
+    await this.flatRepository.clear();
+  }
 }

@@ -1,6 +1,6 @@
 import puppeteer, { Page } from 'puppeteer';
 import { CreateFlatDto } from 'src/modules/flat/dto/create-flat.dto';
-import { Scrapper } from 'src/modules/scrapper/types';
+import { Scrapper } from 'src/modules/scrapper/interfaces';
 
 export async function initScrapper(): Promise<Scrapper> {
   const browser = await puppeteer.launch({
