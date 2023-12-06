@@ -45,7 +45,6 @@ export class ScrapperService {
     } finally {
       browser.close();
       console.log('Done ...');
-      console.log('REmoving cache key...');
       await this._cacheManager.set(SCRAPPER_CACHE_PROGRESS_KEY, false, 100000);
     }
   }
