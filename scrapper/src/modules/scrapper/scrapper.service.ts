@@ -8,7 +8,8 @@ import {
   NUM_OF_ITEMS,
   ITEMS_PER_PAGE,
   FLATS_WEB_PAGE,
-  SCRAPPER_CACHE_PROGRESS_KEY,
+  SCRAPPER_PROGRESS,
+  SCRAPPER_PAGE,
 } from './config';
 
 @Injectable()
@@ -26,11 +27,14 @@ export class ScrapperService {
 
     try {
       // Just set it to 100s, or ttl infinite
-      await this._cacheManager.set(SCRAPPER_CACHE_PROGRESS_KEY, true, 100000);
+      await this._cacheManager.set(SCRAPPER_PROGRESS, true, 100000);
 
       for (let index = 1; index < iterations; index++) {
+        // Set current page
+        await this._cacheManager.set(SCRAPPER_PAGE, index, 100000);
+
         const webpage = FLATS_WEB_PAGE + index;
-        await page.goto(webpage);
+        await page.goto(webpage, { timeout: 0 });
         await page.waitForSelector(requiredSelector);
 
         const flats: CreateFlatDto[] = await processFlatsPage(page);
@@ -45,11 +49,14 @@ export class ScrapperService {
     } finally {
       browser.close();
       console.log('Done ...');
-      await this._cacheManager.set(SCRAPPER_CACHE_PROGRESS_KEY, false, 100000);
+      await this._cacheManager.set(SCRAPPER_PROGRESS, false, 100000);
     }
   }
 
   async scrapingStatus() {
-    return await this._cacheManager.get(SCRAPPER_CACHE_PROGRESS_KEY);
+    return {
+      status: await this._cacheManager.get(SCRAPPER_PROGRESS),
+      current_page: await this._cacheManager.get(SCRAPPER_PAGE),
+    };
   }
 }

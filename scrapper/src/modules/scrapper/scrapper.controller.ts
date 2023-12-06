@@ -20,9 +20,6 @@ export class ScrapperController {
   @Get('status')
   @HttpCode(HttpStatus.OK)
   async getScrapingStatus() {
-    return { status: await this._scrapingService.scrapingStatus() };
+    return { data: await this._scrapingService.scrapingStatus() };
   }
-
-  // NOTE: We could have more scrapers, each having its own config,
-  // method of scrapping, etc, so I decided to make it a module.
 }

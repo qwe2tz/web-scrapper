@@ -16,13 +16,17 @@ function App() {
   const [paginationData, setPaginationData] = useState<PaginationMeta>();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchFlats = async () => {
-    const response = await get(`flat?take=24&page=${currentPage}`);
+  const fetchFlats = async (page: number=currentPage) => {
+
+    const response = await get(`flat?take=24&page=${page}`);
 
     if (response) {
-      setFlatsData(response.data);
+      if(flatsData.length === 0 || page != currentPage) {
+        setFlatsData(response.data);
+        setCurrentPage(page);
+      }
+      
       setPaginationData(response.meta);
-      setRequestCounter(0);
     }
   }
 
@@ -40,22 +44,25 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchFlats();
-  }, [currentPage]);
-
-  useEffect(() => {
     if(requestsCounter == 0) {
       return;
     }
 
     async function getScrapperStatus () {
       await get('scrapper/status').then((response) => {
-        console.log('Scrapper status: ', response.status);
-        if (response.status === false && requestsCounter > 1) {
-          console.log('Scrapper status: ', requestsCounter);
+        const data = response.data;
+        console.log('Scrapper status: ', data.status);
+        // If there is at least one filled page, show results
+        // Keep pooling and updating the pagination component
+        if (data.current_page > 1 && requestsCounter > 1) {
           fetchFlats();
-          return;
+
+          if(data.status === false) {
+            // Scrapper finished
+            return;
+          }
         }
+
         const counter = requestsCounter + 1;
         setRequestCounter(counter);
       });
@@ -84,7 +91,7 @@ function App() {
             <FlatList flats={flatsData} />
             <div className="grid md:justify-items-center p-2 m-2">
               <ReactPaginate
-                onPageChange={(event) => setCurrentPage(event.selected + 1)}
+                onPageChange={(event) => fetchFlats(event.selected + 1)}
                 pageCount={paginationData?.pageCount || 1}
                 previousLabel={
                   <IconContext.Provider value={{ color: "#5227d3", size: "36px" }}>

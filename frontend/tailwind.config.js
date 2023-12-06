@@ -28,18 +28,7 @@ export default {
       height: {
         '400': '400px',
       },
-  
-      colors: {
-        primary: '#F9FF73',
-        secondary: '#78DCE8',
-  
-        transparent: 'transparent',
-        current: 'currentColor',
-        gray: '#242424',
-  
-        body: '#9D9E91',
-        bodyDark: '#6A6B63',
-      },
+
   
       fontFamily: {
         sans: ['IBM Plex Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],

@@ -6,20 +6,23 @@ export default function FlatCard({flat }: { flat: FlatType}) {
   return (
     <>
       <div className="flex-card m-2 text-gray bg-lighter bg-white">
-        <img src={ flat.image_url }></img>
-        <div className="grid grid-cols-1 divide-y">
-          <div className="p-3">
-            <h3><b>{ flat.title }</b></h3>
+        <div className="image">
+          <img src={ flat.image_url } alt="test"></img>
+        </div>
+        
+        <div className="grid grid-cols-1 divide-y divide-slate-700/25">
+          <div className="p-3 text-gray-600 text-xl h-20">
+            <h2><b>{ flat.title }</b></h2>
           </div>
-          <div >
-            <div className="p-4">
+          <div className="">
+            <div className="p-4 h-20 text-gray-700">
               <p>{ flat.location }</p>
             </div>
-            <div className="grid grid-cols-2 relative bottom-0">
-              <div className="p-3 bg-green-200">
+            <div className="grid grid-cols-2">
+              <div className="p-3 bg-green-500">
                 <p><b>{ flat.size }</b></p>
               </div>
-              <div className="p-3 bg-blue-200">
+              <div className="p-3 bg-blue-500">
                 { flat.price == priceNA ? (<p>N/A</p>) : (<p><b>{ flat.price }</b></p>)}
               </div>
             </div>

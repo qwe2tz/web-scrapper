@@ -18,18 +18,19 @@ export async function processFlatsPage(page: Page): Promise<CreateFlatDto[]> {
 
     const flats: CreateFlatDto[] = await page.$$eval(selector, (nodes) => {
       return nodes.map((node) => {
-        const title = node
-          .querySelector('.name')
-          .textContent.replace(/  |\r\n|\n|\r/gm, '');
+        const title = node.querySelector('.name').textContent;
+        const titleSanitized = title.replace(/  |\r\n|\n|\r/gm, '');
         const location = node.querySelector('.locality').textContent;
         const titleItems = title.split(' ');
-        const price = node.querySelector('.norm-price ').textContent;
+        const price = node.querySelector('.norm-price').textContent;
         const image_url = node.querySelector('img').getAttribute('src');
 
         return {
-          title,
+          title: titleSanitized,
           location,
-          size: titleItems[titleItems.length - 1],
+          size:
+            titleItems[titleItems.length - 2] +
+            titleItems[titleItems.length - 1],
           price,
           image_url,
         };

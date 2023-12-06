@@ -58,3 +58,7 @@
  background-color: #5227d3;
  color: white;
 }
+
+.loading {
+ background: transparent url(loadinggif.gif) center center no-repeat;
+}
