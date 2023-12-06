@@ -8,7 +8,7 @@ import {
   NUM_OF_ITEMS,
   ITEMS_PER_PAGE,
   FLATS_WEB_PAGE,
-  SCRAPE_CACHE_PROGRESS_ID,
+  SCRAPPER_CACHE_PROGRESS_KEY,
 } from './config';
 
 @Injectable()
@@ -25,7 +25,8 @@ export class ScrapperService {
     const iterations = NUM_OF_ITEMS / ITEMS_PER_PAGE + 1;
 
     try {
-      await this._cacheManager.set('scrapper_in_progress', true, 100000);
+      // Just set it to 100s, or ttl infinite
+      await this._cacheManager.set(SCRAPPER_CACHE_PROGRESS_KEY, true, 100000);
 
       for (let index = 1; index < iterations; index++) {
         const webpage = FLATS_WEB_PAGE + index;
@@ -45,11 +46,11 @@ export class ScrapperService {
       browser.close();
       console.log('Done ...');
       console.log('REmoving cache key...');
-      await this._cacheManager.set('scrapper_in_progress', false, 100000);
+      await this._cacheManager.set(SCRAPPER_CACHE_PROGRESS_KEY, false, 100000);
     }
   }
 
   async scrapingStatus() {
-    return await this._cacheManager.get('scrapper_in_progress');
+    return await this._cacheManager.get(SCRAPPER_CACHE_PROGRESS_KEY);
   }
 }
