@@ -9,6 +9,7 @@ export async function get(route: string) {
       cache: 'no-cache',
       credentials: 'same-origin',
     });
+
     return response.json();
   } catch (err) {
     console.log(`GET error: ${err}`);

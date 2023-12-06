@@ -10,21 +10,22 @@ import Spinner from './components/Spinner';
 // Clear interval when pagination data is the same as the set one
 function App() {
   const [loadingInProgress, setLoadingInProgress] = useState(false);
+  const [requestsCounter, setRequestCounter] = useState(0);
   const [flatsData, setFlatsData] = useState([]);
 
   const fetchFlats = async () => {
     const response = await get('flat');
 
     if (response) {
-      if(response.length != flatsData.length) {
-        setFlatsData(response);
-      }
+      setFlatsData(response.data);
+      setRequestCounter(0);
     }
   }
 
   const handleFetchData = async () => {
     setLoadingInProgress(true);
     await initScrapingProcess();
+    setRequestCounter(1);
   };
 
   // Hooks
@@ -34,12 +35,29 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchFlats();
-    }, 2000);
+    if(requestsCounter == 0) {
+      return;
+    }
 
-    return () => clearInterval(interval);
-  }, [flatsData]);
+    async function getScrapperStatus () {
+      await get('scrapper/status').then((response) => {
+        console.log('Scrapper status: ', response.status);
+        if (response.status === false && requestsCounter > 1) {
+          console.log('Scrapper status: ', requestsCounter);
+          fetchFlats();
+          return;
+        }
+        const counter = requestsCounter + 1;
+        setRequestCounter(counter);
+      });
+    }
+
+    const timeoutId = setTimeout(() => {
+      getScrapperStatus();
+    }, 2000)
+    return () => clearTimeout(timeoutId);
+    
+  }, [requestsCounter]);
 
   return (
     <>
