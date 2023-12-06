@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs/bull": "^10.0.1",
+    "@nestjs/cache-manager": "^2.1.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/mapped-types": "^2.0.4",
@@ -28,10 +29,13 @@
     "@nestjs/schedule": "^4.0.0",
     "@nestjs/typeorm": "^10.0.1",
     "bull": "^4.11.5",
+    "cache-manager": "^4.0.0",
+    "cache-manager-redis-store": "^3.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "pg": "^8.11.3",
     "puppeteer": "^21.5.2",
+    "redis": "^4.6.11",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.17"

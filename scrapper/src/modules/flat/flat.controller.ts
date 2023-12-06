@@ -1,23 +1,24 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { FlatService } from './flat.service';
 import { CreateFlatDto } from './dto/create-flat.dto';
+import { PageOptionsDto } from './dto/page-options.dto';
 
 @Controller('flat')
 export class FlatController {
-  constructor(private readonly flatService: FlatService) {}
+  constructor(private readonly _flatService: FlatService) {}
 
   @Post()
   create(@Body() createFlatDto: CreateFlatDto) {
-    return this.flatService.create(createFlatDto);
+    return this._flatService.create(createFlatDto);
   }
 
   @Get()
-  findAll() {
-    return this.flatService.findAll();
+  findAll(@Query() pageOptionsDto: PageOptionsDto) {
+    return this._flatService.findAll(pageOptionsDto);
   }
 
   @Get('delete_all')
   deleteAll() {
-    return this.flatService.deleteAll();
+    return this._flatService.deleteAll();
   }
 }

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Flat } from '../flat/entities/flat.entity';
 import { BullModule } from '@nestjs/bull';
 import { ScrapperProcessor } from './scrapper.processor';
+import { FlatService } from '../flat/flat.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { ScrapperProcessor } from './scrapper.processor';
     TypeOrmModule.forFeature([Flat]),
   ],
   controllers: [ScrapperController],
-  providers: [ScrapperService, ScrapperProcessor],
+  providers: [FlatService, ScrapperService, ScrapperProcessor],
 })
 export class ScrapperModule {}
