@@ -8,6 +8,9 @@ import { ScrapperModule } from './modules/scrapper/scrapper.module';
 import { ScrapperService } from './modules/scrapper/scrapper.service';
 import { FlatService } from './modules/flat/flat.service';
 import { BullModule } from '@nestjs/bull';
+import { CacheModule } from '@nestjs/cache-manager';
+import type { RedisClientOptions } from 'redis';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -22,11 +25,15 @@ import { BullModule } from '@nestjs/bull';
       synchronize: true,
       logging: true,
     }),
+    // Queue
     BullModule.forRoot({
       redis: {
         host: 'redis',
         port: 6379,
       },
+    }),
+    CacheModule.register({
+      isGlobal: true,
     }),
     FlatModule,
     ScrapperModule,
