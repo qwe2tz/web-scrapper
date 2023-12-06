@@ -10,30 +10,33 @@ import { IconContext } from "react-icons";
 
 
 function App() {
+  // Missing types
   const [loadingInProgress, setLoadingInProgress] = useState(false);
   const [requestsCounter, setRequestCounter] = useState(0);
-  const [flatsData, setFlatsData] = useState([]);
+  const [flatsData, setFlatsData] = useState([]);  // missing flat type (interface?)
   const [paginationData, setPaginationData] = useState<PaginationMeta>();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchFlats = async (page: number=currentPage) => {
+  // ej, tega verjetno jaz ne štekam. Zakaj je tuki async + await v kodi?
+  const fetchFlats = async (page: number = currentPage) => {
 
     const response = await get(`flat?take=24&page=${page}`);
 
     if (response) {
-      if(flatsData.length === 0 || page != currentPage) {
+      if (flatsData.length === 0 || page != currentPage) {
         setFlatsData(response.data);
         setCurrentPage(page);
       }
-      
+
       setPaginationData(response.meta);
     }
+    // handle err? maybe just: alert("error")
   }
 
   const handleFetchData = async () => {
     setLoadingInProgress(true);
     await initScrapingProcess();
-    
+
     setRequestCounter(1);
   };
 
@@ -44,11 +47,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if(requestsCounter == 0) {
+    if (requestsCounter == 0) {
       return;
     }
 
-    async function getScrapperStatus () {
+    async function getScrapperStatus() {
       await get('scrapper/status').then((response) => {
         const data = response.data;
         console.log('Scrapper status: ', data.status);
@@ -57,7 +60,7 @@ function App() {
         if (data.current_page > 1 && requestsCounter > 1) {
           fetchFlats();
 
-          if(data.status === false) {
+          if (data.status === false) {
             // Scrapper finished
             return;
           }
@@ -72,12 +75,12 @@ function App() {
       getScrapperStatus();
     }, 2000)
     return () => clearTimeout(timeoutId);
-    
+
   }, [requestsCounter]);
 
   return (
     <>
-      {flatsData.length == 0?
+      {flatsData.length == 0 ?
         (
           loadingInProgress ? <Spinner /> : (
             <>
