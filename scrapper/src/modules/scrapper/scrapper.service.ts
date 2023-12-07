@@ -26,7 +26,7 @@ export class ScrapperService {
     const iterations = NUM_OF_ITEMS / ITEMS_PER_PAGE + 1;
 
     try {
-      // Just set it to 100s, or ttl infinite
+      // Just set it to 100s, or ttl infinite (not sure why 0 does not work)
       await this._cacheManager.set(SCRAPPER_PROGRESS, true, 100000);
 
       for (let index = 1; index < iterations; index++) {
@@ -54,9 +54,12 @@ export class ScrapperService {
   }
 
   async scrapingStatus() {
+    const status = await this._cacheManager.get(SCRAPPER_PROGRESS);
+    const currentPage = await this._cacheManager.get(SCRAPPER_PAGE);
+
     return {
-      status: await this._cacheManager.get(SCRAPPER_PROGRESS),
-      current_page: await this._cacheManager.get(SCRAPPER_PAGE),
+      status: status,
+      current_page: currentPage,
     };
   }
 }

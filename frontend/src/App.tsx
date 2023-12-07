@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import './App.css'
 import { get } from './lib/api';
 import FlatList from './components/FlatList';
-import initScrapingProcess from './lib/procedures';
 import Spinner from './components/Spinner';
 import ReactPaginate from 'react-paginate';
 import { PaginationMeta } from './types';
@@ -16,6 +15,7 @@ function App() {
   const [flatsData, setFlatsData] = useState([]);  // missing flat type (interface?)
   const [paginationData, setPaginationData] = useState<PaginationMeta>();
   const [currentPage, setCurrentPage] = useState(1);
+  const [logMessage, setLogMessage] = useState("");
 
   // ej, tega verjetno jaz ne štekam. Zakaj je tuki async + await v kodi?
   const fetchFlats = async (page: number = currentPage) => {
@@ -35,7 +35,15 @@ function App() {
 
   const handleFetchData = async () => {
     setLoadingInProgress(true);
-    await initScrapingProcess();
+    setLogMessage("");
+
+    await get('scrapper/start').then((response) => {
+      console.log(response);
+    }).catch((error) => {
+        console.error(error);
+        setLogMessage('Error while starting scrapper service ...');
+        setLoadingInProgress(false);
+    });
 
     setRequestCounter(1);
   };
@@ -68,6 +76,8 @@ function App() {
 
         const counter = requestsCounter + 1;
         setRequestCounter(counter);
+      }).catch((err) => {
+        console.error('Exception occured: ', err);
       });
     }
 
@@ -116,6 +126,15 @@ function App() {
           </>
         )
       }
+
+      { (logMessage !== "") ? (
+        <>
+          <div className="m-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span className="block sm:inline">{logMessage}</span>
+          </div>
+        </>
+      ) : null}
+
     </>
   )
 }
