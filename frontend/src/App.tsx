@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PaginationMeta } from './types';
+import { ApartmentType, PaginationMeta } from './types';
 import { IconContext } from "react-icons";
 import ReactPaginate from 'react-paginate';
 
@@ -11,22 +11,28 @@ import './App.css'
 
 
 function App() {
+  // Missing types
   const [loadingInProgress, setLoadingInProgress] = useState(false);
   const [requestsCounter, setRequestCounter] = useState(0);
-  const [apartmentsData, setApartments] = useState([]);
+  const [apartmentsData, setApartments] = useState<ApartmentType[]>([]);
   const [paginationData, setPaginationData] = useState<PaginationMeta>();
   const [currentPage, setCurrentPage] = useState(1);
   const [logMessage, setLogMessage] = useState("");
 
   const fetchApartments = async (page: number=currentPage) => {
-    const response = await get(`apartment?take=24&page=${page}`);
+    const response = await get(`apartment?take=24&page=${page}`).then((response) => {
+        return response;
+      }).catch((error) => {
+        console.error(error);
+        setLogMessage('Error while loading apartment data ...');
+        setLoadingInProgress(false);
+    });;
 
     if (response) {
       if(apartmentsData.length === 0 || page != currentPage) {
         setApartments(response.data);
         setCurrentPage(page);
       }
-      
       setPaginationData(response.meta);
     }
   }
@@ -42,7 +48,7 @@ function App() {
         setLogMessage('Error while starting scrapper service ...');
         setLoadingInProgress(false);
     });
-    
+
     setRequestCounter(1);
   };
 
@@ -53,11 +59,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if(requestsCounter == 0) {
+    if (requestsCounter == 0) {
       return;
     }
 
-    async function getScrapperStatus () {
+    async function getScrapperStatus() {
       await get('scrapper/status').then((response) => {
         const data = response.data;
         console.log('Scrapper status: ', data.status);
@@ -66,7 +72,7 @@ function App() {
         if (data.current_page > 1 && requestsCounter > 1) {
           fetchApartments();
 
-          if(data.status === false) {
+          if (data.status === false) {
             // Scrapper finished
             return;
           }
@@ -83,7 +89,7 @@ function App() {
       getScrapperStatus();
     }, 2000)
     return () => clearTimeout(timeoutId);
-    
+
   }, [requestsCounter]);
 
   return (
