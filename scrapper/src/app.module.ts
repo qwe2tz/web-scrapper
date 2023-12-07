@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Flat } from './modules/flat/entities/flat.entity';
-import { FlatModule } from './modules/flat/flat.module';
+import { Apartment } from './modules/apartment/entities/apartment.entity';
+import { ApartmentModule } from './modules/apartment/apartment.module';
 import { ScrapperModule } from './modules/scrapper/scrapper.module';
 import { ScrapperService } from './modules/scrapper/scrapper.service';
-import { FlatService } from './modules/flat/flat.service';
+import { ApartmentService } from './modules/apartment/apartment.service';
 import { BullModule } from '@nestjs/bull';
 import { CacheModule } from '@nestjs/cache-manager';
 import type { RedisClientOptions } from 'redis';
@@ -20,8 +20,8 @@ import { redisStore } from 'cache-manager-redis-store';
       port: 5432,
       password: 'postgres',
       username: 'postgres',
-      entities: [Flat],
-      database: 'flats',
+      entities: [Apartment],
+      database: 'apartments',
       synchronize: true,
       logging: true,
     }),
@@ -35,11 +35,11 @@ import { redisStore } from 'cache-manager-redis-store';
     CacheModule.register({
       isGlobal: true,
     }),
-    FlatModule,
+    ApartmentModule,
     ScrapperModule,
   ],
 
   controllers: [AppController],
-  providers: [AppService, ScrapperService, FlatService],
+  providers: [AppService, ScrapperService, ApartmentService],
 })
 export class AppModule {}

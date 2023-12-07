@@ -1,5 +1,5 @@
 import puppeteer, { Page } from 'puppeteer';
-import { CreateFlatDto } from 'src/modules/flat/dto/create-flat.dto';
+import { CreateFlatDto } from 'src/modules/apartment/dto/create-apartment.dto';
 import { Scrapper } from 'src/modules/scrapper/interfaces';
 
 export async function initScrapper(): Promise<Scrapper> {

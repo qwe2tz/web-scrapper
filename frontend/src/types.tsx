@@ -1,4 +1,4 @@
-export type FlatType = {
+export type ApartmentType = {
   title: string;
   location: string;
   size: string;
