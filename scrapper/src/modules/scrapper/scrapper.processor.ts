@@ -7,8 +7,7 @@ export class ScrapperProcessor {
 
   @Process('scrapper-job')
   async scrapeFlats() {
-    console.log('Website scrapping started..');
+    console.log('Scrapping started ...');
     this.scrapperService.scrapeFlats();
-    console.log('compleasdted!!');
   }
 }
