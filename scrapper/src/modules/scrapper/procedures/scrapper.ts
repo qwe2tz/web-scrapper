@@ -12,35 +12,49 @@ export async function initScrapper(): Promise<Scrapper> {
   return { page, browser };
 }
 
-export async function processFlatsPage(
+export async function processApartmentPage(
   page: Page,
 ): Promise<CreateApartmentDto[]> {
   try {
     const selector = '.property';
 
-    const flats: CreateApartmentDto[] = await page.$$eval(selector, (nodes) => {
-      return nodes.map((node) => {
-        const title = node.querySelector('.name').textContent;
-        const titleSanitized = title.replace(/  |\r\n|\n|\r/gm, '');
-        const location = node.querySelector('.locality').textContent;
-        const titleItems = title.split(' ');
-        const price = node.querySelector('.norm-price').textContent;
-        const image_url = node.querySelector('img').getAttribute('src');
+    const apartments: CreateApartmentDto[] = await page.$$eval(
+      selector,
+      (nodes) => {
+        return nodes.map((node) => {
+          const title = node.querySelector('.name').textContent;
 
-        return {
-          title: titleSanitized,
-          location,
-          size:
+          const titleSanitized = title.replace(/  |\r\n|\n|\r/gm, '');
+          const location = node.querySelector('.locality').textContent;
+          const titleItems = title.split(' ');
+          const price = node.querySelector('.norm-price').textContent;
+          const image_url = node.querySelector('img').getAttribute('src');
+
+          console.log('TITLE: ', title);
+          console.log('Title sanitized ', titleSanitized);
+          console.log('Title items ', titleItems);
+          console.log(
+            'Title items ',
             titleItems[titleItems.length - 2] +
-            titleItems[titleItems.length - 1],
-          price,
-          image_url,
-        };
-      });
-    });
+              '  ' +
+              titleItems[titleItems.length - 1],
+          );
 
-    return flats;
+          return {
+            title: titleSanitized,
+            location,
+            size:
+              titleItems[titleItems.length - 2] +
+              titleItems[titleItems.length - 1],
+            price,
+            image_url,
+          };
+        });
+      },
+    );
+
+    return apartments;
   } catch (error) {
-    console.error('Error while scraping job listings:', error);
+    console.error('Error while scraping apartments listings:', error);
   }
 }

@@ -10,12 +10,12 @@ ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
 
 WORKDIR /app
 
-COPY ./scrapper/package.json .
-COPY ./scrapper/package-lock.json .
+COPY ./package.json .
+COPY ./package-lock.json .
 
 RUN npm install
 
-COPY ./scrapper .
+COPY . .
 
 RUN npm run build
 

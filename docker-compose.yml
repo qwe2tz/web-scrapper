@@ -4,8 +4,7 @@ services:
   scrapper:
     container_name: scrapper
     build:
-      context: '.'
-      dockerfile: 'docks/Dockerfile.scrapper'
+      context: './scrapper'
     command: npm run start:dev main
     restart: unless-stopped
     env_file:
@@ -63,7 +62,7 @@ services:
     container_name: nginx
     build:
       context: '.'
-      dockerfile: 'docks/Dockerfile.nginx'
+      dockerfile: './nginx/Dockerfile'
     restart: unless-stopped
     ports:
       - 8080:8080

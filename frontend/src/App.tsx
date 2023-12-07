@@ -26,7 +26,7 @@ function App() {
         console.error(error);
         setLogMessage('Error while loading apartment data ...');
         setLoadingInProgress(false);
-    });;
+    });
 
     if (response) {
       if(apartmentsData.length === 0 || page != currentPage) {
