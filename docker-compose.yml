@@ -8,6 +8,8 @@ services:
       dockerfile: 'docks/Dockerfile.scrapper'
     command: npm run start:dev main
     restart: unless-stopped
+    env_file:
+      - .env.dev
     networks:
       - web-scraper-demo
 
@@ -28,18 +30,22 @@ services:
     container_name: redis
     image: redis:6.2-alpine
     restart: always
+    command: >
+      --requirepass root
     ports:
       - '6379:6379'
     volumes: 
       - cache:/data
     networks:
       - web-scraper-demo
+    env_file:
+      - .env.dev
 
   # pgweb:
   #   image: sosedoff/pgweb:0.11.6
   #   command: /bin/sh -c '
   #     pgweb 
-  #     --bind 0.0.0.0 
+  #     --bind 0.0.0.0
   #     --listen 8081
   #     --prefix db_viewer
   #     --no-ssh
@@ -50,6 +56,8 @@ services:
   #     - db
   #   env_file:
   #     - .env.dev
+  #   networks:
+  #     - web-scraper-demo
 
   nginx:
     container_name: nginx

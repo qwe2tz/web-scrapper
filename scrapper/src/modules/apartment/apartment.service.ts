@@ -1,27 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFlatDto } from './dto/create-flat.dto';
+import { CreateApartmentDto } from './dto/create-apartment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Flat } from './entities/flat.entity';
+import { Apartment } from './entities/apartment.entity';
 import { PageOptionsDto } from './dto/page-options.dto';
 import { PageMetaDto } from './dto/page-meta.dto';
 import { PageDto } from './dto/page.dto';
 
 @Injectable()
-export class FlatService {
+export class ApartmentService {
   constructor(
-    @InjectRepository(Flat) private readonly _flatRepository: Repository<Flat>,
+    @InjectRepository(Apartment)
+    private readonly _apartmentRepository: Repository<Apartment>,
   ) {}
 
-  create(createFlat: CreateFlatDto): Promise<Flat> {
-    return this._flatRepository.save(createFlat);
+  create(createApartment: CreateApartmentDto): Promise<Apartment> {
+    return this._apartmentRepository.save(createApartment);
   }
 
-  async findAll(pageOptionsDto: PageOptionsDto): Promise<PageDto<Flat>> {
-    const queryBuilder = this._flatRepository.createQueryBuilder('flat');
+  async findAll(pageOptionsDto: PageOptionsDto): Promise<PageDto<Apartment>> {
+    const queryBuilder =
+      this._apartmentRepository.createQueryBuilder('apartment');
 
     queryBuilder
-      .orderBy('flat.id', pageOptionsDto.order)
+      .orderBy('apartment.id', pageOptionsDto.order)
       .skip(pageOptionsDto.skip)
       .take(pageOptionsDto.take);
 
@@ -34,6 +36,6 @@ export class FlatService {
   }
 
   async deleteAll(): Promise<void> {
-    await this._flatRepository.clear();
+    await this._apartmentRepository.clear();
   }
 }

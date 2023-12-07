@@ -1,28 +1,29 @@
 import { useEffect, useState } from 'react';
-import './App.css'
-import { get } from './lib/api';
-import FlatList from './components/FlatList';
-import Spinner from './components/Spinner';
-import ReactPaginate from 'react-paginate';
 import { PaginationMeta } from './types';
 import { IconContext } from "react-icons";
+import ReactPaginate from 'react-paginate';
+
+import { get } from './lib/api';
+import ApartmentList from './components/ApartmentList';
+import Spinner from './components/Spinner';
+
+import './App.css'
 
 
 function App() {
   const [loadingInProgress, setLoadingInProgress] = useState(false);
   const [requestsCounter, setRequestCounter] = useState(0);
-  const [flatsData, setFlatsData] = useState([]);
+  const [apartmentsData, setApartments] = useState([]);
   const [paginationData, setPaginationData] = useState<PaginationMeta>();
   const [currentPage, setCurrentPage] = useState(1);
   const [logMessage, setLogMessage] = useState("");
 
-  const fetchFlats = async (page: number=currentPage) => {
-
-    const response = await get(`flat?take=24&page=${page}`);
+  const fetchApartments = async (page: number=currentPage) => {
+    const response = await get(`apartment?take=24&page=${page}`);
 
     if (response) {
-      if(flatsData.length === 0 || page != currentPage) {
-        setFlatsData(response.data);
+      if(apartmentsData.length === 0 || page != currentPage) {
+        setApartments(response.data);
         setCurrentPage(page);
       }
       
@@ -47,8 +48,8 @@ function App() {
 
   // Hooks
   useEffect(() => {
-    console.log("Initial load. Fetching flats ...");
-    fetchFlats();
+    console.log("Initial load. Fetching appartments ...");
+    fetchApartments();
   }, []);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ function App() {
         // If there is at least one filled page, show results
         // Keep pooling and updating the pagination component
         if (data.current_page > 1 && requestsCounter > 1) {
-          fetchFlats();
+          fetchApartments();
 
           if(data.status === false) {
             // Scrapper finished
@@ -87,21 +88,21 @@ function App() {
 
   return (
     <>
-      {flatsData.length == 0?
+      {apartmentsData.length == 0?
         (
           loadingInProgress ? <Spinner /> : (
             <>
               <p className="m-3">Uh-oh, nothing here yet ...</p>
-              <button onClick={() => { handleFetchData() }}>Fetch flats data </button>
+              <button onClick={() => { handleFetchData() }}>Fetch appartments data </button>
             </>
           )
         ) :
         (
           <>
-            <FlatList flats={flatsData} />
+            <ApartmentList apartments={apartmentsData} />
             <div className="grid md:justify-items-center p-2 m-2">
               <ReactPaginate
-                onPageChange={(event) => fetchFlats(event.selected + 1)}
+                onPageChange={(event) => fetchApartments(event.selected + 1)}
                 pageCount={paginationData?.pageCount || 1}
                 previousLabel={
                   <IconContext.Provider value={{ color: "#5227d3", size: "36px" }}>

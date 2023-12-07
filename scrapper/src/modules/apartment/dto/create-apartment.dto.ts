@@ -1,6 +1,6 @@
 import { IsString, MinLength, IsNotEmpty, IsUrl } from 'class-validator';
 
-export class CreateFlatDto {
+export class CreateApartmentDto {
   //NOTE: This are really basic, some attention should be put into these
   //      if this should be used in 'production'
   @IsString()
