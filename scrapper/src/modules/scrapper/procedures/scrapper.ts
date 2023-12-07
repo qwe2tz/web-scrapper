@@ -1,5 +1,5 @@
 import puppeteer, { Page } from 'puppeteer';
-import { CreateFlatDto } from 'src/modules/apartment/dto/create-apartment.dto';
+import { CreateApartmentDto } from 'src/modules/apartment/dto/create-apartment.dto';
 import { Scrapper } from 'src/modules/scrapper/interfaces';
 
 export async function initScrapper(): Promise<Scrapper> {
@@ -12,11 +12,13 @@ export async function initScrapper(): Promise<Scrapper> {
   return { page, browser };
 }
 
-export async function processFlatsPage(page: Page): Promise<CreateFlatDto[]> {
+export async function processFlatsPage(
+  page: Page,
+): Promise<CreateApartmentDto[]> {
   try {
     const selector = '.property';
 
-    const flats: CreateFlatDto[] = await page.$$eval(selector, (nodes) => {
+    const flats: CreateApartmentDto[] = await page.$$eval(selector, (nodes) => {
       return nodes.map((node) => {
         const title = node.querySelector('.name').textContent;
         const titleSanitized = title.replace(/  |\r\n|\n|\r/gm, '');

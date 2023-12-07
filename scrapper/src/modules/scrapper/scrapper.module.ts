@@ -7,6 +7,7 @@ import { Apartment } from '../apartment/entities/apartment.entity';
 import { BullModule } from '@nestjs/bull';
 import { ScrapperProcessor } from './scrapper.processor';
 import { ApartmentService } from '../apartment/apartment.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
