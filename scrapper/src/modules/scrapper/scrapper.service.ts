@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
-import { FlatService } from '../flat/flat.service';
+import { ApartmentService } from '../apartment/apartment.service';
 import { initScrapper, processFlatsPage } from './procedures/scrapper';
-import { CreateFlatDto } from '../flat/dto/create-flat.dto';
+import { CreateApartmentDto } from '../apartment/dto/create-apartment.dto';
 import {
   NUM_OF_ITEMS,
   ITEMS_PER_PAGE,
@@ -15,7 +15,7 @@ import {
 @Injectable()
 export class ScrapperService {
   constructor(
-    private readonly _flatService: FlatService,
+    private readonly _apartmentService: ApartmentService,
     @Inject(CACHE_MANAGER) private _cacheManager: Cache,
   ) {}
 
@@ -37,11 +37,11 @@ export class ScrapperService {
         await page.goto(webpage, { timeout: 0 });
         await page.waitForSelector(requiredSelector);
 
-        const flats: CreateFlatDto[] = await processFlatsPage(page);
+        const flats: CreateApartmentDto[] = await processFlatsPage(page);
 
         // Save flats to DB
         flats.forEach((flat) => {
-          this._flatService.create(flat);
+          this._apartmentService.create(flat);
         });
       }
     } catch (error) {

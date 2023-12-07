@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Flat {
+export class Apartment {
   @PrimaryGeneratedColumn()
   id: number;
 
