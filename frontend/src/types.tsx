@@ -4,6 +4,7 @@ export type ApartmentType = {
   size: string;
   price: string;
   image_url: string;
+  apartment_url: string;
 };
 
 export type PaginationMeta = {

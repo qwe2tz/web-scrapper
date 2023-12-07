@@ -7,7 +7,7 @@ import { CreateApartmentDto } from '../apartment/dto/create-apartment.dto';
 import {
   NUM_OF_ITEMS,
   ITEMS_PER_PAGE,
-  FLATS_WEB_PAGE,
+  APARTMENT_LIST_URL,
   SCRAPPER_PROGRESS,
   SCRAPPER_PAGE,
 } from './config';
@@ -33,7 +33,7 @@ export class ScrapperService {
         // Set current page
         await this._cacheManager.set(SCRAPPER_PAGE, index, 100000);
 
-        const webpage = FLATS_WEB_PAGE + index;
+        const webpage = APARTMENT_LIST_URL + index;
         await page.goto(webpage, { timeout: 0 });
         await page.waitForSelector(requiredSelector);
 

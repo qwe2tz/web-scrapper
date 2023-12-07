@@ -8,12 +8,9 @@ export default {
   theme: {
     extend: {
       flex: {
-        card: '0 1 32%',
-      },
-
-      maxWidth: {
-        'third': '32%',
-        'half': '49%',
+        'card-lg': '0 1 32%',
+        'card-md': '0 1 40%',
+        'card-sm': '0 1 80%',
       },
 
       screens: {
@@ -22,13 +19,7 @@ export default {
         lg: '1024px',
         xl: '1440px',
         hd: '1920px',
-        three: '1280px'
       },
-
-      height: {
-        '400': '400px',
-      },
-
   
       fontFamily: {
         sans: ['IBM Plex Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],

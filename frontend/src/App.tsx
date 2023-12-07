@@ -105,28 +105,33 @@ function App() {
         ) :
         (
           <>
-            <ApartmentList apartments={apartmentsData} />
-            <div className="grid md:justify-items-center p-2 m-2">
-              <ReactPaginate
-                onPageChange={(event) => fetchApartments(event.selected + 1)}
-                pageCount={paginationData?.pageCount || 1}
-                previousLabel={
-                  <IconContext.Provider value={{ color: "#5227d3", size: "36px" }}>
-                    PREV
-                  </IconContext.Provider>
-                }
-                nextLabel={
-                  <IconContext.Provider value={{ color: "#5227d3", size: "36px" }}>
-                    NEXT
-                  </IconContext.Provider>
-                }
-                containerClassName={'pagination flex justify-between'}
-                pageLinkClassName={'page-number'}
-                previousLinkClassName={'page-number'}
-                nextLinkClassName={'page-number'}
-                activeLinkClassName={'page-active'}
-              />
+          <section className="sm:mx-56 sm:grid sm:gap-8 lg:mx-2">
+            <div>
+              <ApartmentList apartments={apartmentsData} />
             </div>
+          </section>
+
+          <div className="justify-center px-48 md:m-8">
+            <ReactPaginate
+              onPageChange={(event) => fetchApartments(event.selected + 1)}
+              pageCount={paginationData?.pageCount || 1}
+              previousLabel={
+                <IconContext.Provider value={{ color: "#5227d3", size: "36px" }}>
+                  PREV
+                </IconContext.Provider>
+              }
+              nextLabel={
+                <IconContext.Provider value={{ color: "#5227d3", size: "36px" }}>
+                  NEXT
+                </IconContext.Provider>
+              }
+              containerClassName={'pagination flex justify-between'}
+              pageLinkClassName={'page-number'}
+              previousLinkClassName={'page-number'}
+              nextLinkClassName={'page-number'}
+              activeLinkClassName={'page-active'}
+            />
+          </div>
           </>
         )
       }

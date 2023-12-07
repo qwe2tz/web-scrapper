@@ -5,18 +5,20 @@ export default function ApartmentCard({ apartment }: { apartment: ApartmentType}
 
   return (
     <>
-      <div className="flex-card m-2 text-gray bg-lighter bg-white">
+      <div className="lg:flex-card-lg sm:m-2 md:m-2 text-gray bg-lighter bg-white">
         <div className="image">
-          <img src={ apartment.image_url } alt="test"></img>
+          <a href={ apartment.apartment_url } target="_blank">
+            <img className="w-full" src={ apartment.image_url } alt="test" ></img>
+          </a>
         </div>
         
         <div className="grid grid-cols-1 divide-y divide-slate-700/25">
-          <div className="p-3 text-gray-600 text-xl h-20">
-            <h2><b>{ apartment.title }</b></h2>
+          <div className="p-4 m-4 text-gray-600 text-xl h-20">
+            <h2><b>{ apartment.location }</b></h2>
           </div>
-          <div className="">
-            <div className="p-4 h-20 text-gray-700">
-              <p>{ apartment.location }</p>
+          <div>
+            <div className="m-1 p-6 h-20 text-gray-700">
+              Property type: <b>Apartment</b>
             </div>
             <div className="grid grid-cols-2">
               <div className="p-3 bg-green-500">
