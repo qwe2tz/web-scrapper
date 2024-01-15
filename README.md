@@ -1,2 +1,2 @@
-# luxonis
-Web scrapper
+
+Simple web scrapper
